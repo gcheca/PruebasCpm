@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+int main()
+{
+  int dato1, dato2, dato3, dato4;
+  int suma1, suma2, producto;
+
+  printf("Vamos a realizar dos sumas de numeros arbitrarios y el producto del resultado de ambas\n");
+  printf("Introduce la primera suma\n");
+  scanf("%d1",&dato1);
+  printf("mas\n");
+  scanf("%d2",&dato2);
+  printf("\n");
+  printf("La segunda suma sera de los numeros\n");
+  scanf("%d3",&dato3);
+  printf("mas\n");
+  scanf("%d4",&dato4);
+  suma1=dato1+dato2;
+  suma2=dato3+dato4;
+  printf("El resultado de la primera suma es %d1, y el de la segunda es %d2\n", suma1, suma2);
+  producto=suma1*suma2;
+  printf("Y el producto de ambas es %d",producto);
+}
