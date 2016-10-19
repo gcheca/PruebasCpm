@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main()
+{
+  int valor1, valor2, valor3, auxiliar;
+
+  printf("Introduce datos a ordenar\n");
+  scanf("%d\n %d\n %d", &valor1, &valor2, &valor3);
+
+  if (valor1 > valor2)
+  {
+    auxiliar=valor1;
+    valor1=valor2;
+    valor2=auxiliar;
+  }
+
+  if (valor3<valor1)
+  {
+    auxiliar=valor3;
+    valor3=valor2;
+    valor2=valor1;
+    valor1=auxiliar;
+  }
+
+  else if (valor3<valor2)
+  {
+    auxiliar=valor2;
+    valor2=valor3;
+    valor3=auxiliar;
+  }
+  printf("Los datos en orden serán = %d, %d y %d \n", valor1,valor2,valor3);
+}
