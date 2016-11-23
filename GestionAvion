@@ -1,0 +1,47 @@
+// Programa gestión avión
+
+#include <stdio.h>
+#include <ctype.h>
+
+const int Numfilas = 10;
+const int Asientosfila = 6;
+const int Pasillo = Asientosfila/2;
+
+typedef enum TipoEstado {vacio, ocupado, reserva};
+typedef TipoEstado TipoOcupado[Asientosfila];
+typedef struct TipoFila
+{
+  TipoOcupado asientosOcupados;
+  int juntas;
+  int juntasP;
+};
+typedef TipoFila TipoPlazas[NumFilas];
+
+void PrintaPlazas(const TipoPlazas P)
+{
+  const char DibujoAsiento[3]={' ', '*', 'R'};
+  print("\n     A   B   C      D   E   F\n\n");
+  for (int i=0;i<Numfilas;i++)
+  {
+    print("%3d",i+1);
+    for(int j=0;j<Asientosfila;j++)
+    {
+      if (j==Pasillo)
+      {
+        printf("   ");
+      }
+      printf(" (%c)", DibujoAsiento[P[i].asientosOcupados[j]]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
+
+void ImprimirTarjeta (int fila, int asiento)
+{
+  printf(".----------------------------.\n");
+  printf("|     TARJETA DE EMBARQUE    |\n");
+  printf("|  Fila :%3d,fila);
+  printf("  Asiento :%3c   |\n", asiento);
+  printf("'----------------------------'\n"
+}
