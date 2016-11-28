@@ -16,7 +16,7 @@ typedef struct TipoFila
   int juntasP;
 };
 typedef TipoFila TipoPlazas[NumFilas];
-
+//Muestra ocupación
 void PrintaPlazas(const TipoPlazas P)
 {
   const char DibujoAsiento[3]={' ', '*', 'R'};
@@ -44,4 +44,41 @@ void ImprimirTarjeta (int fila, int asiento)
   printf("|  Fila :%3d,fila);
   printf("  Asiento :%3c   |\n", asiento);
   printf("'----------------------------'\n"
+}
+
+// Calcula número y posición de plazas contiguas
+void CalcularPlazasJuntas (TipoFila & fila)
+{
+  int juntas=0;
+  int juntasP=0;
+
+  fila.juntas=0;
+  fila.juntasP=0;
+  for(int j=0;j<AdientosFila;j++)
+  {
+    if(j==Pasillo)
+    {
+      juntas=0
+    }
+    if (fila.asientosOcupados[j]==vacio)
+    {
+      juntas++;
+      juntasP++;
+      if (juntas>fila.juntas)
+      {
+        fila.juntas=juntas;
+        fila.desde=j-juntas+1;
+      }
+      if (juntasP>fila.juntasP)
+      {
+        fila.juntasP=juntasP;
+        fila.desdeP=j-juntasP+1;
+      }
+    }
+    else
+    {
+      juntas=0;
+      juntasP=0;
+    }
+  }
 }
