@@ -82,3 +82,40 @@ void CalcularPlazasJuntas (TipoFila & fila)
     }
   }
 }
+void CalcularPlazasJuntas (TipoFila & fila)
+{
+  int juntas=0;
+  int juntasP=0;
+
+  fila.juntas=0;
+  fila.juntasP=0;
+  for(int j=0;j<AdientosFila;j++)
+  {
+    if(j==Pasillo)
+    {
+      juntas=0
+    }
+    if (fila.asientosOcupados[j]==vacio)
+    {
+      juntas++;
+      juntasP++;
+      if (juntas>fila.juntas)
+      {
+        fila.juntas=juntas;
+        fila.desde=j-juntas+1;
+      }
+      if (juntasP>fila.juntasP)
+      {
+        fila.juntasP=juntasP;
+        fila.desdeP=j-juntasP+1;
+      }
+    }
+    else
+    {
+      juntas=0;
+      juntasP=0;
+    }
+  }
+}
+
+//Reservar Plazas contiguas al mismo lado
