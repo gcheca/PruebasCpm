@@ -119,3 +119,203 @@ void CalcularPlazasJuntas (TipoFila & fila)
 }
 
 //Reservar Plazas contiguas al mismo lado
+bool MarcarPlazasJuntas(int numero, TipoFila & fila)
+{
+  if (fila.juntas<numero)
+  {
+    return false;
+  }
+  else
+  {
+    for (int j=1;j<=numero;j++)
+    {
+      fila.asientosOcupados[fila.desde+j-1]=reservado;
+    }
+    return true;
+  }
+}
+
+//Reservar plazas contiguas a un lado u otro del pasillo
+
+bool MarcarPlazasJuntasPasillo (int numero, TipoFila & fila)
+{
+  if (fila.juntas<numero)
+  {
+    return false;
+  }
+  else
+  {
+    for (int j=1;j<=numero;j++)
+    {
+      fila.asientosOcupados[fila.desdeP+j-1]=reservado;
+    }
+    return true;
+  }
+}
+//Reservar plazas indistintamente de juntas o separadas
+void MarcarPlazas (int & numero, Tipofila & fila)
+{
+  int j=0;
+  while(numero>0 && j<AsientosFila)
+  {
+    fila.asientosOcupados[j]=reservado;
+    numero--;
+  }
+}
+
+//Busca plazas cerca
+bool BuscarPlazas (int nuevas, int libres, TipoPlazas plazas)
+{
+  int fila;
+  if (nuevas<=libres)//Busca en la misma fila
+  {
+    fila=0;
+    while(fila<Numfilas)
+    {
+      if(MarcarPlazasJuntas(nuevas, plazas[fila]) )
+      {
+        return true;
+      }
+      fila++;
+    }
+    //Plazas en la misma fila
+    fila=0;
+    while(fila<NumFilas)
+    {
+      if (MarcarPlazasJuntasPasillo(nuevas,plazas[fila]))
+      {
+    return true;
+      }
+    }
+  fila++;
+  }
+  else
+  {
+    printf("No hay plazas suficientes\n");
+  }
+  return false;
+}
+
+//Confirmar o liberar reservas
+void ConfirmarPlazas(bool ok, TipoPlazas plazas)
+{
+  bool cambio;
+  for(int i=0;i<NumFilas;i++)
+  {
+    cambio=false;
+    for(int j=0; j<Asientosfila;j++)
+    {
+      if(plazas[i].asientosOcupados[j]==reservado)
+      {
+        if(ok)
+        {
+          plazas[i].asientosOcupados[j]=ocupado;
+          ImprimirTarjeta(i+1,char(int('A')+j));
+          cambio=true;
+        }
+        else
+        {
+          plazas[i].asientosOcupados[j]=vacio;
+        }
+      }
+    }
+    if(cambio)
+    {
+      CalculasPlazasJuntas(plazas[i]);
+    }
+  }
+}
+
+/*    PROGRAMA PRINCIPAL     */
+
+int main()
+{
+  TipoPlazas pasaje;
+  int sitiosLibres;
+  char car;
+  int aux, fil, col;
+  bool seguir;
+
+//Iniciamos con todo vacío
+sitiosLibres=NumFilas*AsientosFila;
+for(int i=0;i<NumFilas;i++)
+  {
+    for(int j=0;j<AsientosFila;j++)
+    {
+      pasaje[i].asientosOcupados[j]=vacio;
+    }
+    CalculasPlazasJuntas(pasaje[i]);
+  }
+  //Bucle
+  seguir=true;
+  while(seguir)
+  {
+    printf("¿Opción (Plaza, Grupo, Estado, Fin)?");
+    scanf("%c", &car);
+    car=toupper(car);
+    switch(car)
+    //Asigna una plaza determinada
+    {
+      case 'P':
+      do
+      {
+        printf("Elije fila (1 a 10)");
+        scanf("%d",&aux);
+      }
+      while(aux<1||aux>10);
+      do
+      {
+        printf("Elije asiento (A a F)");
+        scanf("%c",&car);
+        car=toupper(car);
+      }
+      while(car<'A'||car>'F');
+      fil=aux-1;
+      col=int(car-'A');
+      if(pasaje[fil].asientosOcupados[col]==vacio)
+      {
+        pasaje[fil].asientosOcupados[col]==ocupado;
+        sitiosLibres--;
+        CalcularPlazasJuntas(pasaje[fil]);
+        ImprimirTarjeta(fil+1,char(int'A')+col));
+      }
+      else
+      {
+        printf("** Plaza Ocupada ** \n");
+      }
+      break;
+      //Asigna automático plazas contiguas
+      case 'G':
+      do
+      {
+        printf("¿Cuantas plazas? (2 a 6)");
+        scanf("%d", &aux);
+      }
+      while(aux<2||aux>6);
+      if(BuscarPlazas(aux, sitiosLibres,pasaje))
+      {
+        PintarPlaas(pasaje);
+        printf("Confirmar (S/N)");
+        scanf("%c",&car);
+        if(toupper(car)=='S')
+        {
+          ConfirmarPlazas(true,pasaje);
+          sitiosLibres=sitiosLibres-aux;
+        }
+        else
+        {
+          ConfirmarPlazas(false,pasaje);
+        }
+      }
+      break;
+      //Printa ocupación
+      case'E':
+      PintarPlazas(pasaje);
+      break;
+      //Finalizar
+      case'F':
+      seguir=false;
+      break;
+    }
+  }
+}
